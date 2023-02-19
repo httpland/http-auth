@@ -1,6 +1,6 @@
 import { isString, type Middleware } from "./deps.ts";
 import type { Authentication } from "./types.ts";
-import { Field, parseAuthorization } from "./utils.ts";
+import { equalsCaseInsensitive, Field, parseAuthorization } from "./utils.ts";
 
 /** Create authentication middleware with authorization.
  *
@@ -45,7 +45,10 @@ export default function auth(authentication: Authentication): Middleware {
     try {
       const { scheme, token } = parseAuthorization(authorizationValue);
 
-      if (authentication.scheme !== scheme) return unauth();
+      // Case insensitive @see https://www.rfc-editor.org/rfc/rfc9110.html#section-11.1
+      if (!equalsCaseInsensitive(authentication.scheme, scheme)) {
+        return unauth();
+      }
 
       const pass = await authentication.authenticate(token);
 

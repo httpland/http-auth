@@ -125,4 +125,29 @@ describe("auth", () => {
       }),
     ));
   });
+
+  it("should return handler response when the authorization case insensitive scheme is same", async () => {
+    const authenticate = spy(() => true);
+    const handler = spy(() => new Response());
+
+    const middleware = auth({
+      scheme: "A",
+      authenticate,
+    });
+    const response = await middleware(
+      new Request("http://localhost", {
+        headers: { [Field.Authorization]: "a   token" },
+      }),
+      handler,
+    );
+
+    assertSpyCall(authenticate, 0, { args: ["token"] });
+    assertSpyCalls(handler, 1);
+    assert(equalsResponse(
+      response,
+      new Response(null, {
+        status: 200,
+      }),
+    ));
+  });
 });

@@ -57,3 +57,8 @@ export function parseAuthorization(input: string): Authorization {
 
   return { scheme, token };
 }
+
+/** Whether the inputs same as case insensitive or not. */
+export function equalsCaseInsensitive(left: string, right: string): boolean {
+  return !left.localeCompare(right, undefined, { sensitivity: "base" });
+}
