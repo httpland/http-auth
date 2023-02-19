@@ -30,7 +30,7 @@ You specify the Authenticate scheme and provide the authentication function for
 token.
 
 ```ts
-import auth from "https://deno.land/x/http_auth@$VERSION/middleware.ts";
+import auth from "https://deno.land/x/http_auth@$VERSION/mod.ts";
 import {
   assertSpyCall,
   assertSpyCalls,
