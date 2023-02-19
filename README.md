@@ -30,31 +30,28 @@ You specify the Authenticate scheme and provide the authentication function for
 token.
 
 ```ts
-import auth from "https://deno.land/x/http_basic_auth@$VERSION/middleware.ts";
-export {
+import auth from "https://deno.land/x/http_auth@$VERSION/middleware.ts";
+import {
+  assertSpyCall,
   assertSpyCalls,
   spy,
 } from "https://deno.land/std@0.177.0/testing/mock.ts";
-
-const middleware = auth({
-  scheme: "Bearer",
-  authenticate: (token) => {
-    // check token
-    return false;
-  },
-});
+import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
 const handler = spy(() => new Response());
+const authenticate = spy(() => false);
+const middleware = auth({ scheme: "<auth-scheme>", authenticate });
 const response = await middleware(
   new Request("http://localhost", {
-    headers: { authorization: "Bearer <token>" },
+    headers: { authorization: "<auth-scheme> <token>" },
   }),
   handler,
 );
 
 assertSpyCalls(handler, 0);
+assertSpyCall(authenticate, 0, { args: ["<token>"] });
 assertEquals(response.status, 401);
-assertEquals(response.headers.get("www-authenticate"), "Basic");
+assertEquals(response.headers.get("www-authenticate"), "<auth-scheme>");
 ```
 
 ## Authentication headers
