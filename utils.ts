@@ -34,17 +34,14 @@ export interface Authorization {
 }
 
 /**
- * ```abnf
- * Authorization = credentials
- * credentials = auth-scheme [ 1*SP ( token68 / #auth-param ) ]
- * ```
- * @see https://www.rfc-editor.org/rfc/rfc9110.html#section-11.6.2 */
-const ReAuthentication =
-  /^(?<scheme>[A-Za-z0-9!#$%&'*+-.^_`|~]+)(?: +(?<token>[A-Za-z0-9-._~+/]+=*))?$/;
+ * Generate from `abnf.ts`.
+ */
+export const ReAuthentication =
+  /^(?<scheme>(?:[A-Za-z0-9!#$%&'*+-.^_`|~])+)(?:(?:\x20)+(?<token>(?:[A-Za-z0-9-._~+/]+=*|(?:(?:[A-Za-z0-9!#$%&'*+-.^_`|~])+\s*=\s*(?:(?:[A-Za-z0-9!#$%&'*+-.^_`|~])+|\x22(?:\t|\x20|!|[\x23-\x5B]|[\x5D-\x7E]|[\x80-\xFF]|\\(?:\t|\x20|[\x21-\x7E]|[\x80-\xFF]))*\x22)(?:\s*,\s*(?:[A-Za-z0-9!#$%&'*+-.^_`|~])+\s*=\s*(?:(?:[A-Za-z0-9!#$%&'*+-.^_`|~])+|\x22(?:\t|\x20|!|[\x23-\x5B]|[\x5D-\x7E]|[\x80-\xFF]|\\(?:\t|\x20|[\x21-\x7E]|[\x80-\xFF]))*\x22))*)?)))?$/;
 
 /** Parse string as authorization value.
  *
- * @throws {Error} If the input is invalid syntax
+ * @throws {TypeError} If the input is invalid syntax
  */
 export function parseAuthorization(input: string): Authorization {
   const result = input.match(ReAuthentication);
