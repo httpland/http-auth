@@ -1,7 +1,6 @@
 # http-auth
 
-HTTP Authentication middleware and framework for standard `Request` and
-`Response`.
+HTTP authentication middleware framework for standard `Request` and `Response`.
 
 Compliant with
 [RFC 9110, 11 HTTP Authentication](https://www.rfc-editor.org/rfc/rfc9110.html#name-http-authentication).
