@@ -86,6 +86,29 @@ The `scheme` represent `<auth-scheme>`.
 The `authenticate` receives `<token>` from the `Authorization` header. It
 interprets the token is valid or not.
 
+## Basic
+
+Provides ready-to-use Authorization for basic authentication.
+
+```ts
+import auth from "https://deno.land/x/http_auth@$VERSION/mod.ts";
+import Basic from "https://deno.land/x/http_auth@$VERSION/basic.ts";
+import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+
+const middleware = auth(
+  new Basic({ "<user-id>": "<password>", admin: "123456" }),
+);
+const response = await middleware(
+  new Request("http://localhost"),
+  () => new Response(),
+);
+
+assertEquals(
+  response.headers.get("www-authenticate"),
+  `Basic realm="Secure aria"`,
+);
+```
+
 ## License
 
 Copyright © 2023-present [httpland](https://github.com/httpland).

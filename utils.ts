@@ -62,3 +62,25 @@ export function parseAuthorization(input: string): Authorization {
 export function equalsCaseInsensitive(left: string, right: string): boolean {
   return !left.localeCompare(right, undefined, { sensitivity: "base" });
 }
+
+/** @see https://www.rfc-editor.org/rfc/rfc7617#section-2 */
+// deno-lint-ignore no-control-regex
+const ReUserPass = /^([^\x00-\x1F\x7F]*?):([^\x00-\x1F\x7F]*)$/;
+
+export interface UserPass {
+  readonly userId: string;
+  readonly password: string;
+}
+
+/** Parse as User-Pass.
+ * @throws {TypeError}
+ */
+export function parseUserPass(input: string): UserPass {
+  const result = ReUserPass.exec(input);
+
+  if (!result || !isString(result[1]) || !isString(result[2])) {
+    throw TypeError("invalid syntax");
+  }
+
+  return { userId: result[1], password: result[2] };
+}
