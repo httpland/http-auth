@@ -13,7 +13,7 @@ export interface Options {
   readonly realm: string;
 }
 
-const DEFAULT_REALM = "Secure area";
+const DEFAULT_REALM = `Secure area`;
 const SCHEME = "Basic";
 
 /** HTTP Basic Authentication.

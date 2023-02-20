@@ -31,7 +31,11 @@ import { equalsCaseInsensitive, Field, parseAuthorization } from "./utils.ts";
  * ```
  */
 export default function auth(authentication: Authentication): Middleware {
-  const authenticate = `${authentication.scheme}`;
+  const params = Object.entries(authentication.params ?? {}).map((
+    [key, value],
+  ) => authParamToString(key, value));
+
+  const authenticate = [authentication.scheme, ...params].join(" ");
   const headers = { [Field.WWWAuthenticate]: authenticate };
   const init: ResponseInit = { status: 401, headers };
 
@@ -61,4 +65,8 @@ export default function auth(authentication: Authentication): Middleware {
   };
 
   return authMiddleware;
+}
+
+function authParamToString(key: string, value: string): string {
+  return `${key}=${value}`;
 }

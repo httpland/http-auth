@@ -150,4 +150,28 @@ describe("auth", () => {
       }),
     ));
   });
+
+  it("should return handler response when the authorization case insensitive scheme is same", async () => {
+    const middleware = auth({
+      scheme: "Basic",
+      authenticate: () => false,
+      params: {
+        realm: `"Secure area"`,
+      },
+    });
+    const response = await middleware(
+      new Request("http://localhost"),
+      () => new Response(),
+    );
+
+    assert(equalsResponse(
+      response,
+      new Response(null, {
+        status: 401,
+        headers: {
+          "www-authenticate": `Basic realm="Secure area"`,
+        },
+      }),
+    ));
+  });
 });

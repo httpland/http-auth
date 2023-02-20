@@ -88,7 +88,7 @@ interprets the token is valid or not.
 
 ## Basic
 
-Provides ready-to-use Authorization for basic authentication.
+Provides ready-to-use Authorization for Basic Authentication.
 
 ```ts
 import auth from "https://deno.land/x/http_auth@$VERSION/mod.ts";
@@ -105,7 +105,7 @@ const response = await middleware(
 
 assertEquals(
   response.headers.get("www-authenticate"),
-  `Basic realm="Secure aria"`,
+  `Basic realm="Secure area"`,
 );
 ```
 
